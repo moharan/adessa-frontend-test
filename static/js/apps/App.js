@@ -32,12 +32,39 @@ const cartProduct = {
 
 class App extends Component {
 
-    // Call mock.json
+    //Call mock.json
     constructor(props) {
       super(props)
         this.state = {
           catalogList: catalogData.catalog,
+          shopCartList : []
         }
+        //removeItemFromShopCar
+        this.removeItemFromShopCart = this.removeItemFromShopCart.bind(this);
+        //addItemToShopCar
+        this.addItemToShopCart = this.addItemToShopCart.bind(this);
+      }
+      removeItemFromShopCart (itemKey) {
+        return () => {
+          let newShopCartList = this.state.shopCartList.slice();
+          newShopCartList.splice(itemKey, 1);
+          console.log(newShopCartList);
+            
+          this.setState({
+            shopCartList: newShopCartList
+          })
+        }
+      }
+      addItemToShopCart (itemKey) {
+        return () => {
+          let selectedItem = Object.assign({}, this.state.catalogList[itemKey]);
+          let newShopCartList = this.state.shopCartList.slice();
+          newShopCartList.push(selectedItem);
+  
+          this.setState({
+            shopCartList: newShopCartList
+          })       
+        }      
       }
 
     render() {
@@ -45,16 +72,16 @@ class App extends Component {
     return (
       <Grid>
           {/*Select Product*/}
-          <Row style={cartList}>
+          <Row>
           <Col xs={10} xsOffset={1}>
-            {this.state.catalogList.map((item, index) => {
+            {this.state.shopCartList.map((item, index) => {
               return (
                 <Col key={index} xs={2} style={cartProduct}>
                   <div>
                   <Image src={item.imageURL} responsive/>
                     <div style={contentDiv}>{item.name}</div>
                     <div style={contentDiv}>{('$ ' + item.price)}</div>              
-                    <Button style={elementButton} block>Remove</Button>
+                    <Button onClick={this.removeItemFromShopCart(index)} style={elementButton} block>Remove</Button>
                   </div>                      
                 </Col>
               );
@@ -71,7 +98,7 @@ class App extends Component {
                         <Image src={item.imageURL} responsive/>
                         <div style={contentDiv}>{item.name}</div>
                         <div style={contentDiv}>{('$ ' + item.price)}</div>              
-                        <Button style={elementButton} block>Add</Button>
+                        <Button onClick={this.addItemToShopCart(index)} style={elementButton} block>Add</Button>
                       </div>                      
                     </Col>
                   );
