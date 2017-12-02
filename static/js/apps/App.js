@@ -5,21 +5,12 @@ import catalogData from '../../../data/mock.json'
 //import './App.css';
 //react-bootstrap Component
 import { Grid, Row, Col, Button, Image } from 'react-bootstrap'
-
-const elementCol = {
-  borderRadius: 5,
-  paddingTop: 30,
-  width: 150,
-  height: 150,
-  textAlign: 'center',
-  backgroundColor: '#666666',
-}
 const elementButton = {
   marginTop: 10,
 }
 const backgroundGrid = {
   backgroundColor: 'silver',
-  padding: 10,
+  padding: 5,
 }
 const contentDiv = {
   textAlign: 'center',
@@ -29,7 +20,14 @@ const contentDiv = {
 const cartList = {
   backgroundColor: 'white',
   textAlign: 'center',
-  paddingTop: 10,
+  padding: 10,
+  margin: 10,
+}
+const cartProduct = {
+  backgroundColor: 'gray',
+  textAlign: 'center',
+  padding: 10,
+  margin: 10,
 }
 
 class App extends Component {
@@ -48,14 +46,27 @@ class App extends Component {
       <Grid>
           {/*Select Product*/}
           <Row style={cartList}>
-          ...
-          </Row>
+          <Col xs={10} xsOffset={1}>
+            {this.state.catalogList.map((item, index) => {
+              return (
+                <Col key={index} xs={2} style={cartProduct}>
+                  <div>
+                  <Image src={item.imageURL} responsive/>
+                    <div style={contentDiv}>{item.name}</div>
+                    <div style={contentDiv}>{('$ ' + item.price)}</div>              
+                    <Button style={elementButton} block>Remove</Button>
+                  </div>                      
+                </Col>
+              );
+            })}                                                       
+          </Col>
+        </Row>
           {/*Product List*/}        
             <Row style={backgroundGrid}>
-              <Col xs={10} xsOffset={1}>
+              <Col xs={12}>
                 {this.state.catalogList.map((item, index) => {
                   return (
-                    <Col key={index} xs={3} style={cartList}>
+                    <Col key={index} xs={2} style={cartList}>
                       <div>
                         <Image src={item.imageURL} responsive/>
                         <div style={contentDiv}>{item.name}</div>
