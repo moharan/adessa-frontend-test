@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 //data
 import catalogData from '../../../data/mock.json'
-console.log('working', catalogData.catalog[0].name);
+//console.log('working', catalogData.catalog[0].name);
 //import './App.css';
 //react-bootstrap Component
-import { Grid, Row, Col, Button } from 'react-bootstrap'
+import { Grid, Row, Col, Button, Image } from 'react-bootstrap'
 
 const elementCol = {
   borderRadius: 5,
@@ -29,9 +29,19 @@ const contentDiv = {
 const cartList = {
   backgroundColor: 'white',
   textAlign: 'center',
+  paddingTop: 10,
 }
 
 class App extends Component {
+
+    // Call mock.json
+    constructor(props) {
+      super(props)
+        this.state = {
+          catalogList: catalogData.catalog,
+        }
+      }
+
     render() {
     
     return (
@@ -40,17 +50,23 @@ class App extends Component {
           <Row style={cartList}>
           ...
           </Row>
-          {/*Catalog*/}
-          <Row style={backgroundGrid}>
-            <Col xs={10} md={10} xsOffset={1} mdOffset={1}>
-              <Col xs={3} md={3}>
-                <div style={elementCol}>Content</div>
-                <div style={contentDiv}>Product</div>
-                <div style={contentDiv}>$$$</div>
-                <Button style={elementButton} block>Add</Button>
+          {/*Product List*/}        
+            <Row style={backgroundGrid}>
+              <Col xs={10} xsOffset={1}>
+                {this.state.catalogList.map((item, index) => {
+                  return (
+                    <Col key={index} xs={3} style={cartList}>
+                      <div>
+                        <Image src={item.imageURL} responsive/>
+                        <div style={contentDiv}>{item.name}</div>
+                        <div style={contentDiv}>{('$ ' + item.price)}</div>              
+                        <Button style={elementButton} block>Add</Button>
+                      </div>                      
+                    </Col>
+                  );
+                })}                                                       
               </Col>
-            </Col>
-          </Row>
+            </Row>
       </Grid>
     );
   }
